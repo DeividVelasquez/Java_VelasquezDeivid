@@ -57,10 +57,13 @@ public class trainer {
 
     @Override
     public String toString() {
-        return "Camper{" +
-                "identificacion = " + identificacion + '\'' +
-                "nombres = " + nombres + '\'' +
-
+        return "\n Camper{" +
+                "\n identificacion = " + identificacion + '\'' +
+                "\n nombres = " + nombres + '\'' +
+                "\n apellidos = " + apellidos + '\'' +
+                "\n Numero de celular = " + celular + '\'' +
+                "\n Salon = " + salon + '\'' +
+                "\n }";
     }
 
 }

@@ -110,17 +110,17 @@ class Camper {
 
     @Override
     public String toString() {
-        return "Camper{" +
-                "identificacion='" + identificacion + '\'' +
-                ", nombres='" + nombres + '\'' +
-                ", apellidos='" + apellidos + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", acudiente='" + acudiente + '\'' +
-                ", telefonoCelular='" + telefonoCelular + '\'' +
-                ", telefonoFijo='" + telefonoFijo + '\'' +
-                ", estado='" + estado + '\'' +
-                ", riesgo='" + riesgo + '\'' +
-                '}';
+        return "\n Camper{" +
+                "\n identificacion='" + identificacion + '\'' +
+                ",\n nombres='" + nombres + '\'' +
+                ",\n apellidos='" + apellidos + '\'' +
+                ",\n direccion='" + direccion + '\'' +
+                ",\n acudiente='" + acudiente + '\'' +
+                ",\n telefonoCelular='" + telefonoCelular + '\'' +
+                ",\n telefonoFijo='" + telefonoFijo + '\'' +
+                ",\n estado='" + estado + '\'' +
+                ",\n riesgo='" + riesgo + '\'' +
+                "\n }";
     }
 }
 
