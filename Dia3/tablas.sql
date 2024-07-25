@@ -1,5 +1,3 @@
--- Active: 1721868172919@@127.0.0.1@3306@hospital
-
 -- ################################
 -- ###### Creacion de tablas ######
 -- ################################
@@ -91,3 +89,6 @@ create table tecnico(
     Foreign Key (id) REFERENCES personal(id)
 );
 
+insert into persona values("1", "Deivid", "Velasquez", "Calle104a", "2007-04-21", "Bachiller");
+
+select * from persona;
