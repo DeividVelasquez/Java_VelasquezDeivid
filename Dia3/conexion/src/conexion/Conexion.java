@@ -57,6 +57,15 @@ public class Conexion {
         }
     }
     
+    public void addHospital(Scanner sc){
+        Conexion cn = new Conexion();
+        Connection con = cn.Conexion();
+        PreparedStatement ps = null;
+        
+        String nombre = obtenerEntradaObligatoria(sc, "el nombre");
+        String direccion = obtenerEntradaObligatoria(sc, "la direccion");
+    }
+    
     public void viewpersona(){
         Conexion cn = new Conexion();
         Connection con = cn.Conexion();
