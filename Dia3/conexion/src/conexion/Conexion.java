@@ -19,7 +19,7 @@ public class Conexion {
     public Connection Conexion() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Hospital", "campus2023", "campus2023");
+            con = DriverManager.getConnection("jdbc:mysql://bhr9agww1d8bmr3zluxy-mysql.services.clever-cloud.com:3306/bhr9agww1d8bmr3zluxy", "uuhh71qcx2qp0j1w", "Mbk4GjR8YAp0mBh0vwHu");
         } catch (Exception ex) {
             System.err.println("Error" + ex);
         }
@@ -197,7 +197,7 @@ public class Conexion {
             System.out.println("4. Eliminar persona");
             System.out.println("5. Salir del Menú persona");
             
-            System.out.println("Selecciones una opción: ");
+            System.out.print("Selecciones una opción: ");
             option = sc.nextInt();
             sc.nextLine();
             

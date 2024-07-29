@@ -3,9 +3,9 @@
 -- ###### Creacion de tablas ######
 -- ################################
 
-create database Hospital;
+create database bhr9agww1d8bmr3zluxy;
 
-use Hospital;
+use bhr9agww1d8bmr3zluxy;
 
 create table persona (
     id int auto_increment primary key,
