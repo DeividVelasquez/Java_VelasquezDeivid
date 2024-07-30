@@ -4,24 +4,46 @@
 
 package com.mycompany.conexion;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 /**
  *
  * @author camper
  */
 public class Conexion {
-    Connection con;
+    private Connection con;
     public Connection Conexion() {
-        try {
+        Properties props = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("Config.properties")) {
+            if (input == null) {
+                throw new IllegalStateException("Archivo Config.properties no encontrado");
+            }
+
+            props.load(input);
+
+            String url = props.getProperty("Url");
+            String user = props.getProperty("User");
+            String password = props.getProperty("Password");
+
+            if (url == null || user == null || password == null) {
+                throw new IllegalStateException("Una o más propiedades de conexión no están definidas");
+            }
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://bhr9agww1d8bmr3zluxy-mysql.services.clever-cloud.com:3306/bhr9agww1d8bmr3zluxy", "uuhh71qcx2qp0j1w", "Mbk4GjR8YAp0mBh0vwHu");
-        } catch (Exception ex) {
-            System.err.println("Error" + ex);
+            con = DriverManager.getConnection(url, user, password);
+            System.out.println("Conexión exitosa a la base de datos");
+        } catch (IOException | ClassNotFoundException | SQLException | IllegalStateException e) {
+            System.err.println("Error en la conexión :(, error: " + e);
+            JOptionPane.showMessageDialog(null, "Error en la conexión: " + e.toString());
         }
         return con;
     }
