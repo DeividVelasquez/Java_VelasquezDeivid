@@ -4,13 +4,12 @@
  */
 package baloncesto;
 
-import java.util.Date;
 
 public class liga extends partido {
     
     public int jornada;
     
-    public liga (String equipoLocal, String equipoVisitante, int cestasLocal, int cestasVisitante, boolean estado, Date fechaPartido, int jornada){
+    public liga (String equipoLocal, String equipoVisitante, int cestasLocal, int cestasVisitante, boolean estado, String fechaPartido, int jornada){
         super(equipoLocal, equipoVisitante, cestasLocal, cestasVisitante, estado, fechaPartido);
         this.jornada = jornada;
     }
@@ -52,14 +51,19 @@ public class liga extends partido {
         switch(option){
             case 1:
                 partidoInfo();
+                break;
             case 2:
                 partidoMarcador();
+                break;
             case 3:
                 partidoResultados();
+                break;
             case 4:
                 equipoGanador();
+                break;
             default:
                 System.out.println("Saliendo...");
+                break;
         }
     }
     
@@ -81,39 +85,41 @@ public class liga extends partido {
                 String rta = sc.nextLine();
                 setEquipoLocal(rta);
                 System.out.println("Se ingresó el nuevo equipo local exitosamente");
+                break;
                 
             }case 2->{
                 System.out.println("Ingrese el nuevo equipo Visitante");
                 String rta = sc.nextLine();
                 setEquipoVisitante(rta);
                 System.out.println("Se ingresó el nuevo equipo Visitante exitosamente");
-                
+                break;
             }case 3->{
                 System.out.println("Ingrese el numero de cestas del equipo local");
                 int rta = sc.nextInt();
                 setCestasLocal(rta);
                 System.out.println("Se ingresó el numero de cestas del equipo local exitosamente");
-                
+                break;
             }case 4->{
                 System.out.println("Ingrese el numero de cestas del equipo visitante");
                 int rta = sc.nextInt();
                 setCestasVisitante(rta);
                 System.out.println("Se ingresó el numero de cestas del equipo visitante exitosamenta");
-            
+                break;
             }case 5->{
-                System.out.println("Ingrese la nueva fecha del partido");
+                System.out.println("Ingrese la nueva fecha del partido(YYYY-MM-DD)");
                 String rta = sc.nextLine();
                 setFechaPartido(rta);
                 System.out.println("Se ingresó la nueva fecha del partido exitosamente");
-                
+                break;
             }case 6->{
                 System.out.println("Ingrese la jornada del partido de liga");
                 int rta = sc.nextInt();
                 setJornada(rta);
                 System.out.println("Se ingresó la nueva fecha del partido exitosamente");
-                
+                break;
             }default->{
                 System.out.println("Saliendo...");
+                break;
             }
         }
     }

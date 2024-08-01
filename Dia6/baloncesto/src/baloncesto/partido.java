@@ -1,13 +1,7 @@
 
 package baloncesto;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class partido {
     Scanner sc = new Scanner(System.in);
@@ -17,9 +11,9 @@ public class partido {
     protected int cestasLocal;
     protected int cestasVisitante;
     protected boolean estado;
-    protected Date fechaPartido;
+    protected String fechaPartido;
 
-    public partido(String equipoLocal, String equipoVisitante, int cestasLocal, int cestasVisitante, boolean estado, Date fechaPartido){
+    public partido(String equipoLocal, String equipoVisitante, int cestasLocal, int cestasVisitante, boolean estado, String fechaPartido){
         this.equipoLocal = equipoLocal;
         this.equipoVisitante = equipoVisitante;
         this.cestasLocal = cestasLocal;
@@ -73,18 +67,12 @@ public class partido {
         }
     }
 
-    public Date getFechaPartido(){
+    public String getFechaPartido(){
         return fechaPartido;
     }
 
     public void setFechaPartido(String fechaPartido) {
-        try {
-            DateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
-            sourceFormat.setLenient(false);
-            this.fechaPartido = sourceFormat.parse(fechaPartido.replace('/', '-'));
-        } catch (ParseException e) {
-            Logger.getLogger(partido.class.getName()).log(Level.SEVERE, null, e);
-        }
+        this.fechaPartido = fechaPartido;
     }
     
     public void equipoGanador(){
@@ -93,9 +81,9 @@ public class partido {
             System.out.println("El partido sigue en juego.");
         }else{
             if(cestasLocal>cestasVisitante){
-                System.out.println("El equipo local, " + equipoLocal);
+                System.out.println("El equipo local, " + getEquipoLocal());
             }else{
-                System.out.println("El equipo visitante, " + equipoVisitante);
+                System.out.println("El equipo visitante, " + getEquipoVisitante());
             }
         }
     }
@@ -143,14 +131,19 @@ public class partido {
         switch(option){
             case 1:
                 partidoInfo();
+                break;
             case 2:
                 partidoMarcador();
+                break;
             case 3:
                 partidoResultados();
+                break;
             case 4:
                 equipoGanador();
+                break;
             default:
                 System.out.println("Volviendo...");
+                break;
         }
     }
 
@@ -161,7 +154,6 @@ public class partido {
         System.out.println("2. Equipo Visitante");
         System.out.println("3. Cestas del Equipo local");
         System.out.println("4. Cestas del Equipo visitante");
-        System.out.println("5. Estado del partido");
         System.out.println("5. Fecha del partido");
         System.out.println("6. Salir");
         int option = sc.nextInt();
@@ -171,40 +163,50 @@ public class partido {
                 String rta = sc.nextLine();
                 setEquipoLocal(rta);
                 System.out.println("Se ingresó el nuevo equipo local exitosamente");
+                break;
                 
             case 2:
-                System.out.println("Ingrese el nuevo equipo visitante:");
+                System.out.println("Ingrese el nuevo equipo visitante:"); 
                 String rta2 = sc.nextLine();
                 setEquipoVisitante(rta2);
                 System.out.println("Se ingresó el nuevo equipo visitante exitosamente");
-                
+                break;
             case 3:
                 System.out.println("Ingrese el numero de cestas del equipo local:");
                 int rta3 = sc.nextInt();
                 setCestasLocal(rta3);
                 System.out.println("Se ingresó el numero de cestas del equipo local exitosamente");
-                
+                break;
             case 4:
                 System.out.println("Ingrese el numero de cestas del equipo visitante:");
                 int rta4 = sc.nextInt();
                 setCestasVisitante(rta4);
                 System.out.println("Se ingresó el numero de cestas del equipo visitante exitosamente");
-            
+                break;      
             case 5:
-                System.out.println("Ingrese el nuevo estado del partido:");
-                String rta5 = sc.nextLine();
-                setEstado(rta5);
-                System.out.println("Se ingreso el nuevo estado del partigo exitosamente");
-            
-            case 6:
                 System.out.println("Ingrese la nueva fecha del partido");
                 String rta6 = sc.nextLine();
                 setFechaPartido(rta6);
                 System.out.println("Se ingresó la nueva fecha del partido exitosamente");
+                break;
+            case 6:
+                System.out.println("Saliendo ...");
+                break;
                 
             default:
-                System.out.println("Saliendo ...");
+                System.out.println("Opcion incorrecta.");
             
+        }
+    }
+    
+    public void finalizarPartido(){
+        System.out.println("Finalizar el partido");
+        if(getCestasLocal() == getCestasVisitante()){
+            System.out.println("El partido acabo en un empate");
+        }else if(getCestasLocal() > getCestasVisitante()){
+            System.out.println("El partido finalizo ganando el equipo local: " + getEquipoLocal());
+        } else if(getCestasLocal() < getCestasVisitante()){
+            System.out.println("El partido finalizo ganando el equipo visitante: " + getEquipoVisitante());
         }
     }
 
