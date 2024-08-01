@@ -1,4 +1,5 @@
-package Dia6;
+
+package baloncesto;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -11,12 +12,12 @@ import java.util.logging.Logger;
 public class partido {
     Scanner sc = new Scanner(System.in);
 
-    private String equipoLocal;
-    private String equipoVisitante;
-    private int cestasLocal;
-    private int cestasVisitante;
-    private boolean estado;
-    private Date fechaPartido;
+    protected String equipoLocal;
+    protected String equipoVisitante;
+    protected int cestasLocal;
+    protected int cestasVisitante;
+    protected boolean estado;
+    protected Date fechaPartido;
 
     public partido(String equipoLocal, String equipoVisitante, int cestasLocal, int cestasVisitante, boolean estado, Date fechaPartido){
         this.equipoLocal = equipoLocal;
@@ -208,3 +209,4 @@ public class partido {
     }
 
 }
+
