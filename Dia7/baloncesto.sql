@@ -1,4 +1,5 @@
--- Active: 1722795849893@@bicgnrjz9nek32oc7te0-mysql.services.clever-cloud.com@3306@bicgnrjz9nek32oc7te0
+-- Active: 1722888963083@@bicgnrjz9nek32oc7te0-mysql.services.clever-cloud.com@3306@bicgnrjz9nek32oc7te0
+
 use bicgnrjz9nek32oc7te0;
 
 create table partido(
@@ -24,7 +25,6 @@ create table playOffs (
     Foreign Key (id_partido) REFERENCES partido(id) ON DELETE CASCADE,
     ronda enum("Octavos", "Cuartos", "Final") not null
 );
-
 
 
 

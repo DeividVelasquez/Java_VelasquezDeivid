@@ -47,7 +47,6 @@ public class Baloncesto {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(url, user, password);
-            System.out.println("Conexión exitosa a la base de datos");
         } catch (IOException | ClassNotFoundException | SQLException | IllegalStateException e) {
             System.err.println("Error en la conexión :(, error: " + e);
             JOptionPane.showMessageDialog(null, "Error en la conexión: " + e.toString());
@@ -89,20 +88,8 @@ public class Baloncesto {
                     String equipoVisitante = obtenerDatoObligatorio(sc, "el nombre del equipo visitante");
                     int cestasLocal = obtenerDatoObligatorioint(sc, "el numero de cestas del equipo local");
                     int cestasVisitante = obtenerDatoObligatorioint(sc, "el numero de cestas del equipo visitante");
-
-                    String estado;
-                    while(true){
-                        System.out.println("Ingresa el estado en el que se encuentra el partido(Activo, Finalizado)(Obligatorio)");
-                        estado = sc.nextLine();
-                        estado = estado.substring(0, 1).toUpperCase() + estado.substring(1).toLowerCase();
-
-                        if("Activo".equals(estado) || "Finalizado".equals(estado)){
-                            break;
-                        } else {
-                            System.out.println(estado + " no fue reconocido como un estado valido");
-                        }
-                       
-                    }
+                    String estado = "Activo";
+                    
 
                     String fechaPartido;
                     while(true){
@@ -142,6 +129,9 @@ public class Baloncesto {
                         }
 
                         System.out.println("Datos insertados correctamente.");
+                        con.close();
+
+                        
                     } catch (Exception e) {
                         System.out.println("Error al insertar los datos a la base de datos: " + e.getMessage());
                     }
@@ -154,27 +144,7 @@ public class Baloncesto {
                     String equipoVisitante = obtenerDatoObligatorio(sc, "el nombre del equipo visitante");
                     int cestasLocal = obtenerDatoObligatorioint(sc, "el numero de cestas del equipo local");
                     int cestasVisitante = obtenerDatoObligatorioint(sc, "el numero de cestas del equipo visitante");
-
-                    String estado;
-                    while(true){
-                        System.out.println("Ingresa el estado en el que se encuentra el partido(Activo, Finalizado)(Obligatorio)");
-                        estado = sc.nextLine();
-                        estado = estado.substring(0, 1).toUpperCase() + estado.substring(1).toLowerCase();
-
-                        if("Activo".equals(estado) || "Finalizado".equals(estado)){
-                            if("Finalizado".equals(estado)){
-                                if (cestasLocal == cestasVisitante){
-                                    System.out.println("El partido no puede ser finalizado si el partido se encuentra en empate");
-                                }else {
-                                    break;
-                                }
-                            }else {
-                                break;
-                            }
-                        } else {
-                            System.out.println(estado + " no fue reconocido como un estado valido");
-                        }
-                    }
+                    String estado = "Activo";
 
                     String fechaPartido;
                     while(true){
@@ -225,6 +195,7 @@ public class Baloncesto {
                         }
 
                         System.out.println("Datos insertados correctamente.");
+                        con.close();
                     } catch (Exception e) {
                         System.out.println("Error al insertar los datos a la base de datos: " + e.getMessage());
                     }
@@ -235,6 +206,7 @@ public class Baloncesto {
              default:
                  System.out.println("Opcion incorrecta");
          }
+         
           
     }
     
@@ -266,23 +238,31 @@ public class Baloncesto {
                 } catch(Exception e){
                     System.out.println("Error al ver la base de datos: " + e.getMessage());
                 }
+                break;
             case 2:
                 try{
                     st = bl.con.createStatement();
                     rs = st.executeQuery("SELECT * FROM partido INNER JOIN playOffs ON partido.id = playOffs.id_partido");
                     while(rs.next()){
-                        System.out.println("ID = " + rs.getInt("id") + " - " + "Equipo Local = " + rs.getString("equipoLocal") + " - " + "Equipo Visitante = " + rs.getString("equipoVisitante") + " - " + "Cestas equipo local = " + rs.getInt("cestasLocal") + " - " + "Cestas equipo Visitante = " + rs.getInt("cestasVisitante") + " - " + "Estado = " + rs.getString("estado") + " - " + "Fecha del partido = " + rs.getString("fechaPartido") + " - " + "Jornada = " +rs.getInt("jornada"));
+                        System.out.println("ID = " + rs.getInt("id") + " - " + "Equipo Local = " + rs.getString("equipoLocal") + " - " + "Equipo Visitante = " + rs.getString("equipoVisitante") + " - " + "Cestas equipo local = " + rs.getInt("cestasLocal") + " - " + "Cestas equipo Visitante = " + rs.getInt("cestasVisitante") + " - " + "Estado = " + rs.getString("estado") + " - " + "Fecha del partido = " + rs.getString("fechaPartido") + " - " + "Ronda = " +rs.getString("ronda"));
                     }
                     con.close();
                     
                 } catch(Exception e){
                     System.out.println("Error al ver la base de datos: " + e.getMessage());
                 }
+                break;
+            case 3:
+                System.out.println("Saliendo...");
+                break;
+            default:
+                System.out.println("Opcion incorrecta");
+            
         }
         
     }
     
-        public void updatePartido(Scanner sc) {
+    public void updatePartido(Scanner sc) {
         Baloncesto bl = new Baloncesto();
         Connection con = null;
         PreparedStatement ps = null;
@@ -313,26 +293,13 @@ public class Baloncesto {
                         rs.close();
                         ps.close();
 
-                        ps = con.prepareStatement("UPDATE partido SET equipoLocal = ?, equipoVisitante = ?, cestasLocal = ?, cestasVisitante = ?, estado = ?, fechaPartido = ? WHERE id = ?");
+                        ps = con.prepareStatement("UPDATE partido SET equipoLocal = ?, equipoVisitante = ?, cestasLocal = ?, cestasVisitante = ?, fechaPartido = ? WHERE id = ?");
                         ps2 = con.prepareStatement("UPDATE liga SET jornada = ? WHERE id_partido = ?");
 
                         String equipoLocal = obtenerDatoObligatorio(sc, "el nombre del equipo local");
                         String equipoVisitante = obtenerDatoObligatorio(sc, "el nombre del equipo visitante");
                         int cestasLocal = obtenerDatoObligatorioint(sc, "el número de cestas del equipo local");
                         int cestasVisitante = obtenerDatoObligatorioint(sc, "el número de cestas del equipo visitante");
-
-                        String estado;
-                        while (true) {
-                            System.out.println("Ingresa el estado en el que se encuentra el partido (Activo, Finalizado) (Obligatorio)");
-                            estado = sc.nextLine();
-                            estado = estado.substring(0, 1).toUpperCase() + estado.substring(1).toLowerCase();
-
-                            if ("Activo".equals(estado) || "Finalizado".equals(estado)) {
-                                break;
-                            } else {
-                                System.out.println(estado + " no fue reconocido como un estado válido");
-                            }
-                        }
 
                         String fechaPartido;
                         while (true) {
@@ -352,9 +319,8 @@ public class Baloncesto {
                         ps.setString(2, equipoVisitante);
                         ps.setInt(3, cestasLocal);
                         ps.setInt(4, cestasVisitante);
-                        ps.setString(5, estado);
-                        ps.setString(6, fechaPartido);
-                        ps.setInt(7, id);
+                        ps.setString(5, fechaPartido);
+                        ps.setInt(6, id);
 
                         ps2.setInt(1, jornada);
                         ps2.setInt(2, id);
@@ -381,26 +347,13 @@ public class Baloncesto {
                         rs.close();
                         ps.close();
 
-                        ps = con.prepareStatement("UPDATE partido SET equipoLocal = ?, equipoVisitante = ?, cestasLocal = ?, cestasVisitante = ?, estado = ?, fechaPartido = ? WHERE id = ?");
+                        ps = con.prepareStatement("UPDATE partido SET equipoLocal = ?, equipoVisitante = ?, cestasLocal = ?, cestasVisitante = ?, fechaPartido = ? WHERE id = ?");
                         ps2 = con.prepareStatement("UPDATE playOffs SET ronda = ? WHERE id_partido = ?");
 
                         String equipoLocal = obtenerDatoObligatorio(sc, "el nombre del equipo local");
                         String equipoVisitante = obtenerDatoObligatorio(sc, "el nombre del equipo visitante");
                         int cestasLocal = obtenerDatoObligatorioint(sc, "el número de cestas del equipo local");
                         int cestasVisitante = obtenerDatoObligatorioint(sc, "el número de cestas del equipo visitante");
-
-                        String estado;
-                        while (true) {
-                            System.out.println("Ingresa el estado en el que se encuentra el partido (Activo, Finalizado) (Obligatorio)");
-                            estado = sc.nextLine();
-                            estado = estado.substring(0, 1).toUpperCase() + estado.substring(1).toLowerCase();
-
-                            if ("Activo".equals(estado) || "Finalizado".equals(estado)) {
-                                break;
-                            } else {
-                                System.out.println(estado + " no fue reconocido como un estado válido");
-                            }
-                        }
 
                         String fechaPartido;
                         while (true) {
@@ -414,17 +367,16 @@ public class Baloncesto {
                             }
                         }
 
-                        //partido de playOffs
                         String ronda;
-                        while(true){
-                            System.out.println("Ingresa la ronda en la que se encuentra el partido(Octavos, Cuartos, Final)");
+                        while (true) {
+                            System.out.println("Ingresa la ronda en la que se encuentra el partido (Octavos, Cuartos, Final)");
                             ronda = sc.nextLine();
                             ronda = ronda.substring(0, 1).toUpperCase() + ronda.substring(1).toLowerCase();
 
-                            if("Octavos".equals(ronda) || "Cuartos".equals(ronda) || "Final".equals(ronda)){
+                            if ("Octavos".equals(ronda) || "Cuartos".equals(ronda) || "Final".equals(ronda)) {
                                 break;
                             } else {
-                                System.out.println("Ronda no identificada. Por favor ingresa una valida");
+                                System.out.println("Ronda no identificada. Por favor ingresa una válida.");
                             }
                         }
 
@@ -432,9 +384,8 @@ public class Baloncesto {
                         ps.setString(2, equipoVisitante);
                         ps.setInt(3, cestasLocal);
                         ps.setInt(4, cestasVisitante);
-                        ps.setString(5, estado);
-                        ps.setString(6, fechaPartido);
-                        ps.setInt(7, id2);
+                        ps.setString(5, fechaPartido);
+                        ps.setInt(6, id2);
 
                         ps2.setString(1, ronda);
                         ps2.setInt(2, id2);
@@ -444,7 +395,7 @@ public class Baloncesto {
 
                         System.out.println("Datos actualizados correctamente.");
                     } else {
-                        System.out.println("No se encontró un partido de liga con el ID proporcionado.");
+                        System.out.println("No se encontró un partido de PlayOffs con el ID proporcionado.");
                     }
                     break;
                 case 3:
@@ -456,8 +407,7 @@ public class Baloncesto {
             }
         } catch (Exception e) {
             System.out.println("Error al editar el partido: " + e.getMessage());
-        }
-        
+        } 
     }
         
     public void deletePartido(Scanner sc) {
@@ -481,9 +431,113 @@ public class Baloncesto {
             } else {
                 System.out.println("No se encontró un partido con el ID proporcionado.");
             }
+            con.close();
         } catch (SQLException e) {
             System.out.println("Error al eliminar el partido: " + e.getMessage());
         }
+    }
+    
+    public void finalizarPartido(Scanner sc) {
+        Baloncesto bl = new Baloncesto();
+        Connection con = null;
+        PreparedStatement ps = null;
+        PreparedStatement psUpdate = null;
+        ResultSet rs = null;
+        String estado = "Finalizado";
+
+        int option;
+
+        do {
+            System.out.println("¿Qué tipo de partido deseas finalizar?");
+            System.out.println("1. Liga");
+            System.out.println("2. PlayOffs");
+            System.out.println("3. Salir");
+            option = sc.nextInt();
+            sc.nextLine();
+
+            switch(option) {
+                case 1:
+                    try {
+                        con = bl.Conexion();
+                        int cestasLocal = rs.getInt("cestasLocal");
+                        int cestasVisitante = rs.getInt("cestasVisitante");
+                        System.out.println("Ingresa el id del partido de liga que deseas actualizar");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+
+                        ps = con.prepareStatement("SELECT * FROM liga INNER JOIN partido ON liga.id_partido = partido.id WHERE liga.id_partido = ?");
+                        ps.setInt(1, id);
+                        rs = ps.executeQuery();
+
+                        if (rs.next()) {
+                            if(cestasLocal > cestasVisitante){
+                                System.out.println("El equipo ganador fue = " + rs.getString("equipoLocal"));
+                            }else if(cestasLocal < cestasVisitante){
+                                System.out.println("El equipo ganador fue = " + rs.getString("equipoVisitante"));
+                            }else {
+                                System.out.println("El partido resulto en un empate");
+                            }
+                            
+                            psUpdate = con.prepareStatement("UPDATE partido SET estado = ? WHERE id = ?");
+                            psUpdate.setString(1, estado);
+                            psUpdate.setInt(2, id);
+                            psUpdate.executeUpdate();
+
+                            System.out.println("El estado del partido ha sido actualizado a 'Finalizado'.");
+                        } else {
+                            System.out.println("No se encontró un partido de liga con el ID proporcionado.");
+                        }
+                        con.close();
+                    } catch (SQLException e) {
+                        System.out.println("Error al finalizar partido: " + e.getMessage());
+                    } 
+                    break;
+                case 2:
+                    try {
+                        con = bl.Conexion();
+                        System.out.println("Ingresa el id del partido de PlayOffs que deseas actualizar");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+
+                        ps = con.prepareStatement("SELECT * FROM playOffs INNER JOIN partido ON playOffs.id_partido = partido.id WHERE playOffs.id_partido = ?");
+                        ps.setInt(1, id);
+                        rs = ps.executeQuery();
+
+                        if (rs.next()) {
+                            int cestasLocal = rs.getInt("cestasLocal");
+                            int cestasVisitante = rs.getInt("cestasVisitante");
+
+                            if (cestasLocal == cestasVisitante) {
+                                System.out.println("El partido no puede finalizar en empate. Por favor, actualiza el resultado antes de finalizar el partido.");
+                            } else {
+                                if(cestasLocal > cestasVisitante){
+                                    System.out.println("El equipo ganador fue = " + rs.getString("equipoLocal"));
+                                }else if(cestasLocal < cestasVisitante){
+                                    System.out.println("El equipo ganador fue = " + rs.getString("equipoVisitante"));
+                                }
+                                
+                                psUpdate = con.prepareStatement("UPDATE partido SET estado = ? WHERE id = ?");
+                                psUpdate.setString(1, estado);
+                                psUpdate.setInt(2, id);
+                                psUpdate.executeUpdate();
+
+                                System.out.println("El estado del partido ha sido actualizado a 'Finalizado'.");
+                            }
+                    } else {
+                        System.out.println("No se encontró un partido de PlayOffs con el ID proporcionado.");
+                    }
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println("Error al finalizar partido: " + e.getMessage());
+                }
+                    break;
+                case 3:
+                    System.out.println("Saliendo...");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Por favor, selecciona una opción del 1 al 3.");
+            }
+        } while (option != 3);
     }
     
     private static String obtenerDatoObligatorio(Scanner sc, String campo) {
@@ -532,7 +586,8 @@ public class Baloncesto {
             System.out.println("2. Ver informacion de partido");
             System.out.println("3. Modificar partido");
             System.out.println("4. Eliminar partido");
-            System.out.println("5. Salir");
+            System.out.println("5. Finalizar partido");
+            System.out.println("6. Salir");
             option = sc.nextInt();
             sc.nextLine();
 
@@ -550,6 +605,8 @@ public class Baloncesto {
                     bl.deletePartido(sc);
                     break;
                 case 5:
+                    bl.finalizarPartido(sc);
+                case 6:
                     System.out.println("Saliendo...");
                     break;
                 default:
