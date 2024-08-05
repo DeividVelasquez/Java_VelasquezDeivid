@@ -4,6 +4,9 @@
  */
 package baloncesto;
 
+// Documentación del proyecto
+// https://docs.google.com/document/d/1R0o5Vjug9gE8aQhSe_B4_9HjnUp06Nm4byC-uFZc6RI/edit?usp=sharing
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -159,7 +162,15 @@ public class Baloncesto {
                         estado = estado.substring(0, 1).toUpperCase() + estado.substring(1).toLowerCase();
 
                         if("Activo".equals(estado) || "Finalizado".equals(estado)){
-                            break;
+                            if("Finalizado".equals(estado)){
+                                if (cestasLocal == cestasVisitante){
+                                    System.out.println("El partido no puede ser finalizado si el partido se encuentra en empate");
+                                }else {
+                                    break;
+                                }
+                            }else {
+                                break;
+                            }
                         } else {
                             System.out.println(estado + " no fue reconocido como un estado valido");
                         }
