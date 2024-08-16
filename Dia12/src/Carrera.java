@@ -1,33 +1,53 @@
-class Carrera {
-    private int atletaActual = 0;
-    private final Object testigo = new Object();
-    private boolean corriendo = true;
+public class Carrera {
+    private static final Object testigo = new Object();
+    private static long tiempoInicio;
+    private static int turno = 1;
 
-    public void correr(int id) throws InterruptedException {
-        synchronized (testigo) {
-            while (atletaActual != id) {
-                testigo.wait();
+    public static void main(String[] args) {
+        tiempoInicio = System.currentTimeMillis();
+
+        Corredor corredor1 = new Corredor("Atleta 1", 1);
+        Corredor corredor2 = new Corredor("Atleta 2", 2);
+        Corredor corredor3 = new Corredor("Atleta 3", 3);
+        Corredor corredor4 = new Corredor("Atleta 4", 4);
+
+        corredor1.start();
+        corredor2.start();
+        corredor3.start();
+        corredor4.start();
+    }
+
+    public static class Corredor extends Thread {
+        private String nombre;
+        private int orden;
+
+        public Corredor(String nombre, int orden){
+            this.nombre = nombre;
+            this.nombre = nombre;
+        }
+
+        @Override
+        public void run(){
+            synchronized (testigo){
+                try {
+
+                    while (orden != turno) {
+                        testigo.wait();
+                    }
+
+                    System.out.println(nombre + " comenzó a correr.");
+                    long tiempoCarrera = 9000 + (long)(Math.random() * 2000);
+                    Thread.sleep(tiempoCarrera);
+                    long tiempoFinal = System.currentTimeMillis();
+                    System.out.println(nombre + " terminó de correr en " + (tiempoFinal - tiempoInicio) / 1000.0 + " segundos.");
+
+                    turno++;
+                    testigo.notify();
+
+                } catch(InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            // Atleta comienza a correr
-            System.out.println("Atleta " + (id+1) + " está corriendo.");
-            long inicio = System.currentTimeMillis();
-            new Atleta(this, (id + 1) % 4).start(); // Inicia el siguiente atleta
-            esperarTiempoAleatorio();
-            long fin = System.currentTimeMillis();
-            System.out.println("Atleta " + id + " terminó en " + (fin - inicio) + " ms.");
-            atletaActual = (id + 1) % 4;
-            testigo.notifyAll(); // Notifica al siguiente atleta
         }
     }
-
-    private void esperarTiempoAleatorio() throws InterruptedException {
-        int tiempo = 9000 + new Random().nextInt(2000); // Tiempo entre 9000 y 11000 ms
-        Thread.sleep(tiempo);
-    }
-
-    public void iniciarCarrera() {
-        new Atleta(this, 0).start(); // Comienza la carrera con el primer atleta
-    }
 }
-
-
